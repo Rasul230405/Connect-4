@@ -1,5 +1,5 @@
 
-from gameLogic import ConnectFour
+from gameLogic import ConnectFour, is_endgame
 
 
 def game_loop(flag, game) -> None:
@@ -28,7 +28,7 @@ def game_loop(flag, game) -> None:
         
         game.board.print()
 
-        if ConnectFour.is_endgame(game.board, row, col):
+        if is_endgame(game.board, row, col):
             flag = False
             if not player_turn:
                 print("You Lost!")
@@ -41,5 +41,5 @@ def game_loop(flag, game) -> None:
         
 
         
-connect4 = ConnectFour(max_depth=5)
+connect4 = ConnectFour(difficulty_level=5)
 game_loop(True, connect4)

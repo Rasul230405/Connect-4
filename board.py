@@ -2,15 +2,15 @@ import numpy as np
 
 class Board:
 
-    column = 7
-    row = 6
     player = 1
     ai = 2
     
-    def __init__(self):
-        self.board = Board.__create_board(Board.row, Board.column)
+    def __init__(self, row: int=6, column: int=7):
+        self.column = 7
+        self.row = 6
+        self.board = Board.__create_board(self.row, self.column)
 
-    def update(self, row, col, turn):
+    def update(self, row: int, col: int, turn: str):
         if turn == 'player':
             self.board[row][col] = 1
         elif turn == 'ai':
@@ -19,9 +19,14 @@ class Board:
             raise ValueError
 
     def print(self):
-        for i in range(0, Board.row):
-            for j in range(0, Board.column):
-                print(f"{self.board[i][j]} ", end="")
+        for i in range(0, self.row):
+            for j in range(0, self.column):
+                if self.board[i][j] == Board.player:
+                    print("\033[31mO\033[0m ", end="")
+                elif self.board[i][j] == Board.ai:
+                    print("\033[34mO\033[0m ", end="")
+                else:
+                    print(". ", end="")
 
             print()
 
