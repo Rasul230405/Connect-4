@@ -1,2 +1,3 @@
 *.py~
 board_ui.py
+*.pyc

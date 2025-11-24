@@ -22,13 +22,13 @@ def game_loop(flag, game) -> None:
                 except ValueError as e:
                     print(f"Error: {e}")
         else:
-             print("AI moves...")
+            
              [row, col] = game.ai_move()
-
+             print(f"AI moves: {[row, col]}\n")
         
         game.board.print()
 
-        if game.is_endgame(row, col):
+        if ConnectFour.is_endgame(game.board, row, col):
             flag = False
             if not player_turn:
                 print("You Lost!")
@@ -41,5 +41,5 @@ def game_loop(flag, game) -> None:
         
 
         
-connect4 = ConnectFour()
+connect4 = ConnectFour(max_depth=5)
 game_loop(True, connect4)
