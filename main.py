@@ -24,7 +24,7 @@ def game_loop(flag, game) -> None:
         else:
             
              [row, col] = game.ai_move()
-             print(f"AI moves: {[row, col]}\n")
+             
         
         game.board.print()
 

@@ -4,6 +4,7 @@ class Board:
 
     player = 1
     ai = 2
+    empty = 0
     
     def __init__(self, row: int=6, column: int=7):
         self.column = 7
