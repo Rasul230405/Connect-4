@@ -2,4 +2,6 @@
 *.pyc
 *.txt
 *.txt~
+*.pth
 temp/
+test/

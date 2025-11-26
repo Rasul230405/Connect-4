@@ -135,7 +135,7 @@ class ConnectFourAI:
                 return ConnectFourAI.pos_inf
         
         if depth == 0:
-            return self.__evaluate(board)
+            return self.evaluate(board)
 
         if is_max_player:
             value = ConnectFourAI.neg_inf
@@ -181,7 +181,7 @@ class ConnectFourAI:
             return value
                            
 
-    def __evaluate(self, board: Board):
+    def evaluate(self, board: Board):
 
         score_max_p = 80    # 7*4 + 7*4 + 4*3 + 4*3
         score_min_p = 80    # 7*4 + 7*4 + 4*3 + 4*3
@@ -190,7 +190,7 @@ class ConnectFourAI:
             for j in range(0, board.column):
                 ch = board.board[i][j]
                 if ch != Board.empty:
-                     
+                    
                      ch_opponent = -1
                      if ch == Board.ai:
                          ch_opponent = Board.player
@@ -204,8 +204,8 @@ class ConnectFourAI:
 
                      while lower_row + 3 <= upper_row:
                          flag = True
-                         for i in range(0, 4):
-                             if board.board[lower_row + i][j] == ch_opponent:
+                         for k in range(0, 4):
+                             if board.board[lower_row + k][j] == ch_opponent:
                                  flag = False
                                  break
 
@@ -227,8 +227,8 @@ class ConnectFourAI:
 
                      while left + 3 <= right:
                          flag = True
-                         for i in range(0, 4):
-                             if board.board[i][left + i] == ch_opponent:
+                         for k in range(0, 4):
+                             if board.board[i][left + k] == ch_opponent:
                                  flag = False
                                  break
 
@@ -251,8 +251,8 @@ class ConnectFourAI:
 
                      while up_left_col + 3 < board.column and up_left_row + 3 < board.row:
                          flag = True
-                         for i in range(0, 4):
-                             if board.board[up_left_row + i][up_left_col + i] == ch_opponent:
+                         for k in range(0, 4):
+                             if board.board[up_left_row + k][up_left_col + k] == ch_opponent:
                                  flag = False
                                  break
 
@@ -268,7 +268,6 @@ class ConnectFourAI:
                          score_max_p -= diagonal_1
 
 
-
                      # diagonal: SW + NE. starting from the upper right coordinate
                      diagonal_2 = 0
                      min_coord = min(i, board.column - 1 - j) #  board.column - 1, because index from 0
@@ -277,8 +276,8 @@ class ConnectFourAI:
 
                      while up_right_row + 3 < board.row and up_right_col - 3 >= 0:
                          flag = True
-                         for i in range(0, 4):
-                             if board.board[up_right_row + i][up_right_col - i] != ch:
+                         for k in range(0, 4):
+                             if board.board[up_right_row + k][up_right_col - k] == ch_opponent:
                                  flag = False
                                  break
 
@@ -292,6 +291,7 @@ class ConnectFourAI:
                          score_min_p -= diagonal_2
                      else:
                          score_max_p -= diagonal_2
+
 
         return score_max_p - score_min_p
 

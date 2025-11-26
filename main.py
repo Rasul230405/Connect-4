@@ -4,7 +4,7 @@ from gameLogic import ConnectFour, is_endgame
 
 def game_loop(flag, game) -> None:
 
-    player_turn = 1
+    player_turn = 0
     
     game.board.print()
     

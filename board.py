@@ -7,15 +7,15 @@ class Board:
     empty = 0
     
     def __init__(self, row: int=6, column: int=7):
-        self.column = 7
-        self.row = 6
+        self.column = column
+        self.row = row
         self.board = Board.__create_board(self.row, self.column)
 
     def update(self, row: int, col: int, turn: str):
         if turn == 'player':
-            self.board[row][col] = 1
+            self.board[row][col] = Board.player
         elif turn == 'ai':
-            self.board[row][col] = 0
+            self.board[row][col] = Board.ai
         else:
             raise ValueError
 
