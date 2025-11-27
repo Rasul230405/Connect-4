@@ -4,4 +4,4 @@
 *.txt~
 *.pth
 temp/
-test/
+test/board_ui.py
