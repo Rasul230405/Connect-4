@@ -1,24 +1,40 @@
 
+# This file contains the implementation of ConnectFour class
 
-# This file contains ConnectFour class
+"""
+This class manages the game logic of Connect4 game.
+The only public functions are ai_move(), player_move(), and is_endgame() 
+
+player_move() takes column numberas an argument and returns a tuple of form (row, column) 
+that represents the coordinates of the player's move after the gravity is applied at the 
+column that is passed as an argument.
+
+ai_moves() returns the AI move, takes no argument
+
+is_endgame() ,as the name implies, checks if game ended or not after the last move
+
+Other functions are used for deciding the move of AI at each turn 
+"""
 
 import numpy as np
 from board import Board
 from board_game_AI import BoardGameAI
+
 
 class ConnectFour:
 
     max_eval = 80
     min_eval = -80
     
-    def __init__(self, difficulty_level: int=3):
-        self.board: Board = Board(row=6, column=7)
+    def __init__(self, p_colour: str, difficulty_level: int=3, n_row: int=6,
+                 n_column: int=7):
+        self.board: Board = Board(row=n_row, column=n_column, p_colour=p_colour)
         
-        self.AI = BoardGameAI(ConnectFour.__evaluation_func,
+        self.AI = BoardGameAI(ConnectFour.evaluation_func,
                               ConnectFour.max_eval,
                               ConnectFour.min_eval,
                               ConnectFour.is_endgame,
-                              ConnectFour.__generate_legal_moves)
+                              ConnectFour.generate_legal_moves)
         
         self.max_depth = difficulty_level
 
@@ -42,7 +58,7 @@ class ConnectFour:
 
     @staticmethod
     def gravity(board: Board, col: int) -> int:
-        # given a column returns the 'lowest' row which is not occupied
+        # given a column returns the bottom row which is not occupied
         # if column is full returns -1
         row = -1
         for i in range(board.row - 1, -1, -1):
@@ -53,23 +69,61 @@ class ConnectFour:
         return row
 
     @staticmethod
-    def __generate_legal_moves(board: Board):
-        # there is max board.columns moves at each turn
-        all_moves = np.zeros((board.column, 2), dtype=np.int8)
+    def generate_legal_moves(board: Board) -> List[List[int, int]]:
+        # returns all the possible moves at each turn
+        all_moves = []
 
         for c in range(0, board.column):
             row = ConnectFour.gravity(board, c)
-            all_moves[c][0] = row
-            all_moves[c][1] = c
-
+            if row != -1:
+                all_moves.append([row, c])
+                
         return all_moves
 
     
     @staticmethod
-    def __evaluation_func(board: Board) -> int:
+    def evaluation_func(board: Board) -> int:
+        """
+        Evaluation function checks for possible 4 in rows that each player can make and subtract
+        that from each other's scores.
+        Each player starts with the max score of 80: 
+        7*4 (horizontal) + 7*4 (vertical) + 4*3 (diagonal1) + 4*3 (diagonal2) = 80
 
-        score_max_p = 80    # 7*4 + 7*4 + 4*3 + 4*3
-        score_min_p = 80    # 7*4 + 7*4 + 4*3 + 4*3
+        diagonal1 refers to the diagonal : [top left to bottom right]
+        diagonal2 refers to the diagonal : [top right to bottom left]
+
+        Example: Let's say AI makes a move to the bottom middle cell. Now AI has 4 (horizontal) +
+        + 1 (vertical) + 1 (diagonal1) + 1 (diagonal2) = 7 possible 4 in rows. So we subtract 7
+        from the score of player 80 - 7 = 73.
+        Instead of the bottom middle cell, AI could have made a move to bottom left corner. Then
+        1 (horizontal) + 1 (vertical) + 1 (diagonal2) = 3. 80 - 3 = 77. AI would have decreased
+        the score of player just by 3.
+
+
+        Brief explanation of the implementation: 
+        at each cell first we check if there is a tile placed or not. If there is a tile, we 
+        start counting possible 4 in rows for 4 directions specified above.
+        The one way of doing this is using loop, starting from the cell that is in 3 
+        cell away from the current tile. Because that cell would be the leftmost or rightmost 
+        cell that can potentially create a 4 in row with the current tile. The loop should end 
+        again in the cell that is in 3 cells away from the current tile but in the opposite
+        direction. 
+        We have to check that the cases where +-3 can go outside of the board, and adjust them.
+        In the example below '2' represent a tile, and 'x's are the starting points of potential
+        4 in rows
+
+                           0 1 2 3 4 5 6
+                           _____________
+                        0 |x 0 0 x 0 0 x
+                        1 |0 x 0 x 0 x 0 
+                        2 |0 0 x x x 0 0 
+                        3 |x x x 2 0 0 0 
+                        4 |0 0 0 0 0 0 0 
+                        5 |0 0 0 0 O 0 0
+        """
+        
+        score_max_p = 80    # 7*4 (horizontal) + 7*4 (vertical) + 4*3 (diagonal) + 4*3 (diagonal)
+        score_min_p = 80    # 7*4 (horizontal) + 7*4 (vertical) + 4*3 (diagonal) + 4*3 (diagonal)
 
         for i in range(0, board.row):
             for j in range(0, board.column):
@@ -84,6 +138,8 @@ class ConnectFour:
 
                      # Vertical
                      vertical = 0
+                     # find the starting point for row, so that we can loop over starting from
+                     # this row which is the max of 3 row above and 0.
                      lower_row = max(i - 3, 0)
                      upper_row = min(i + 3, board.row - 1)
 
@@ -106,6 +162,8 @@ class ConnectFour:
 
 
                      # horizontal
+                     # find the leftmost column, so that we can start the loop from this column
+                     # which is the max of 3 columns left and 0.
                      horizontal = 0
                      left = max(j - 3, 0)
                      right = min(j + 3, board.column - 1)
@@ -131,8 +189,8 @@ class ConnectFour:
                      # diagonal: NW + SE
                      diagonal_1 = 0
                      min_coord = min(i, j)
-                     up_left_row = i - min_coord
-                     up_left_col = j - min_coord
+                     up_left_row = i - min(3, min_coord)
+                     up_left_col = j - min(3, min_coord)
 
                      while up_left_col + 3 < board.column and up_left_row + 3 < board.row:
                          flag = True
@@ -155,9 +213,10 @@ class ConnectFour:
 
                      # diagonal: SW + NE. starting from the upper right coordinate
                      diagonal_2 = 0
-                     min_coord = min(i, board.column - 1 - j) #  board.column - 1, because index from 0
-                     up_right_row = i - min_coord
-                     up_right_col = j + min_coord
+                     min_coord = min(i, board.column - 1 - j) #  board.column - 1, because indexing is from 0
+                      # start from the cell that is in 3 cells distance from the current cell in diagonal
+                     up_right_row = i - min(min_coord, 3)
+                     up_right_col = j + min(min_coord, 3) 
 
                      while up_right_row + 3 < board.row and up_right_col - 3 >= 0:
                          flag = True
@@ -183,7 +242,6 @@ class ConnectFour:
 
     @staticmethod
     def is_endgame(board: Board, lm_row: int, lm_col: int) -> int:
-
         # returns 1 if any player wins, -1 if it is draw, 0 if it is not endgame
 
         # lm_row -> row number of last move
@@ -192,13 +250,13 @@ class ConnectFour:
         # no need to check all possible combinations of end game. By knowing the last move, it is
         # more efficient to only check the possible ending combinations which the last move created
 
-        # max 4 in a row in horizontal direction, 1 in a row in vertical direction, max 6 in a row in diagonal direction
+        # max 4 ending combinations in a horizontal direction, always 1 in a vertical direction (south), max 6 in diagonal directions
         # no need to check North direction, because rows are filled from South towards the North
         
         def check_south(board: Board, lm_row: int, lm_col: int) -> bool:
             ch: int = board.get(lm_row, lm_col)
 
-            if lm_row <= 2:
+            if lm_row <= (board.row - 4):
                 flag = True
                 for i in range(lm_row + 1, lm_row + 4):
                     if board.get(i, lm_col) != ch:
