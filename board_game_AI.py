@@ -15,6 +15,9 @@ User of this class only needs to use think() function
 """
 
 from board import Board
+import cProfile
+import pstats
+import csv
 
 class BoardGameAI:
 
@@ -28,10 +31,14 @@ class BoardGameAI:
         
         self.pruning = pruning
         self._max_depth = 0
-        
+        self._profiler = cProfile.Profile()
+     
     def think(self, board: Board, max_depth: int=3) -> tuple(int, int):
         # check all moves and return the move with highest minimax value
         # use this function for generating AI move for the game
+
+        self._profiler.enable()
+        
         self._max_depth = max_depth
         move_scores = []
         
@@ -52,11 +59,13 @@ class BoardGameAI:
                 best_move[0] = row
                 best_move[1] = col
 
-            print(f"{i + 1}'th move is ({row}, {col}),  minimax value: {evaluate_move}")
+            #print(f"{i + 1}'th move is ({row}, {col}),  minimax value: {evaluate_move}")
             move_scores.append([(row, col), evaluate_move])
 
-        print()
-        
+        #print()
+        self._profiler.disable()
+
+        """
         # print all the moves and their score again
         print("High Level summary of moves:")
         for i in range(0, len(move_scores)):
@@ -69,7 +78,7 @@ class BoardGameAI:
                 print("its score is -inf")
             else:
                 print(f"its score is {val}")
-                
+        """      
         return (best_move[0], best_move[1])
 
     
@@ -80,9 +89,9 @@ class BoardGameAI:
         endgame = self.endgame_func(board, lm_row, lm_col)
         if endgame == 1:
             if is_max_player:
-                return self._neg_inf 
+                return self._neg_inf
             else:
-                return self._pos_inf - depth # win sooner. higher depth is better
+                return self._pos_inf - (self._max_depth - depth) # win sooner. higher depth is better
 
         # draw
         if endgame == -1:
@@ -112,19 +121,18 @@ class BoardGameAI:
                 if self.pruning:
                     
                     if beta <= alpha:
-                        print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value: ", end="")
-                        self.__print_val(value)
-                        print()
-                        print(f"beta is {beta}, alpha is {alpha}")
-                        print(f"Depth {self._max_depth - depth + 1}, {len(all_moves) - i - 1} branches pruned.")
+                        #print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value: ", end="")
+                        #self.__print_val(value)
+                        #print()
+                        #print(f"beta is {beta}, alpha is {alpha}")
+                        #print(f"Depth {self._max_depth - depth + 1}, {len(all_moves) - i - 1} branches pruned.")
                         
                         break
-                    alpha = max(alpha, value)
                     
-                print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value:", end="")
-                self.__print_val(value)
-                print()
-                print(f"beta is {beta}, alpha is {alpha}")
+                #print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value:", end="")
+                #self.__print_val(value)
+                #print()
+                #print(f"beta is {beta}, alpha is {alpha}")
 
             return value
         
@@ -143,23 +151,58 @@ class BoardGameAI:
                 if self.pruning:
                     
                     if beta <= alpha:
-                        print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value: ", end="")
-                        self.__print_val(value)
-                        print()
-                        print(f"beta is {beta}, alpha is {alpha}")
-                        print(f"Depth {self._max_depth - depth + 1}, {len(all_moves) - i - 1} branches pruned.")
+                        #print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value: ", end="")
+                        #self.__print_val(value)
+                        #print()
+                        #print(f"beta is {beta}, alpha is {alpha}")
+                        #print(f"Depth {self._max_depth - depth + 1}, {len(all_moves) - i - 1} branches pruned.")
                         
                         break
                     
 
-                print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value:", end="")
-                self.__print_val(value)
-                print()
-                print(f"beta is {beta}, alpha is {alpha}")
+                #print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value:", end="")
+                #self.__print_val(value)
+                #print()
+                #print(f"beta is {beta}, alpha is {alpha}")
 
 
             return value
                            
+    def print_AI_stats(self, filename='ai_performance.csv'):
+        print(f"exporting AI performance stats to {filename}...")
+        stats = pstats.Stats(self._profiler)
+
+        stats.sort_stats('tottime')
+
+        with open(filename, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([
+                'Function name',
+                'ncalls',
+                'Tottime',
+                'Avg time Per Call (tottime/ncalls)',
+                'Cumtime',
+                'file location'
+            ])
+
+
+            for func_key, func_data in stats.stats.items():
+                fname, line_num, func_name = func_key
+                call_count, ncalls, tottime, cumtime, _ = func_data
+
+                avg_time = tottime / ncalls if ncalls > 0 else 0
+
+                writer.writerow([
+                    func_name,
+                    ncalls,
+                    f"{tottime:.6f}",
+                    f"{avg_time:.6f}",
+                    f"{cumtime:.6f}",
+                    f"{fname}"
+                ])
+        
+        print(f"Export completed")
+        
         
     def __print_val(self, val: int) -> None:
         if val == self._pos_inf:

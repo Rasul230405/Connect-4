@@ -46,13 +46,14 @@ def game_loop(game: ConnectFour, player_turn: int=1) -> None:
             print("Draw! Humanity still have a chance against AI")
 
         player_turn = not player_turn
-            
+
+    game.print_game_stats()
         
 
 # parse the command line arguments
 parser =  argparse.ArgumentParser()
 
-parser.add_argument("-d", "--difficulty_level", type=int, help="difficulty level of the game. between [0-15]",
+parser.add_argument("-d", "--difficulty_level", type=int, help="difficulty level of the game. between [0-10]",
                     default = 5)
 parser.add_argument("-c", "--colour", type=str, help="colour of the player's tiles. r for red, b for blue",
                     default = 'r')
@@ -66,8 +67,8 @@ parser.add_argument("-cols", "--n_columns", type=int, help="number of rows in a 
 args = parser.parse_args()
 
 # check the command line arguments
-if args.difficulty_level < 0 or args.difficulty_level > 15:
-    print(f"difficulty level must be between [0-15]. You entered {args.difficulty_level}")
+if args.difficulty_level < 0 or args.difficulty_level > 10:
+    print(f"difficulty level must be between [0-10]. You entered {args.difficulty_level}")
     sys.exit(1)
 
 if args.colour != 'r' and args.colour != 'b':
@@ -88,6 +89,7 @@ if args.n_columns < 4 or args.n_columns > 30:
 
     
 # run the game
+print(f"diffictuly level is {args.difficulty_level}")
 connect4 = ConnectFour(difficulty_level=args.difficulty_level, n_row=args.n_rows,
                        n_column=args.n_columns, p_colour=args.colour)
 game_loop(connect4, args.turn)

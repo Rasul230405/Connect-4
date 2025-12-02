@@ -1,0 +1,23 @@
+Function name,ncalls,Tottime,Avg time Per Call (tottime/ncalls),Cumtime,file location
+<method 'items' of 'dict' objects>,36136,0.004787,0.000000,0.004787,~
+<method 'append' of 'list' objects>,64324,0.007727,0.000000,0.007727,~
+<built-in method builtins.len>,9542,0.001315,0.000000,0.001315,~
+<built-in method builtins.max>,695302,0.074259,0.000000,0.074259,~
+<built-in method builtins.min>,2530034,0.235178,0.000000,0.235178,~
+check_diagonals,36410,0.075939,0.000002,0.116379,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+__minimax,36915,0.072162,0.000002,4.804467,/home/rasul/workspace_uni/aice2002_assg2/board_game_AI.py
+check_horizontal,36646,0.061522,0.000002,0.102745,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+evaluation_func,26607,2.432416,0.000091,4.135221,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+_wrapreduction_any_all,36136,0.030512,0.000001,0.075626,/home/rasul/anaconda3/envs/assignment2/lib/python3.14/site-packages/numpy/_core/fromnumeric.py
+remove,36915,0.012178,0.000000,0.012178,/home/rasul/workspace_uni/aice2002_assg2/board.py
+is_full,36136,0.059861,0.000002,0.159192,/home/rasul/workspace_uni/aice2002_assg2/board.py
+<method 'reduce' of 'numpy.ufunc' objects>,36136,0.040327,0.000001,0.040327,~
+set,36915,0.011593,0.000000,0.011593,/home/rasul/workspace_uni/aice2002_assg2/board.py
+all,36136,0.019483,0.000001,0.095108,/home/rasul/anaconda3/envs/assignment2/lib/python3.14/site-packages/numpy/_core/fromnumeric.py
+_all_dispatcher,36136,0.004223,0.000000,0.004223,/home/rasul/anaconda3/envs/assignment2/lib/python3.14/site-packages/numpy/_core/fromnumeric.py
+get,7835850,1.527735,0.000000,1.527735,/home/rasul/workspace_uni/aice2002_assg2/board.py
+is_endgame,36915,0.046115,0.000001,0.448857,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+gravity_l,66794,0.048033,0.000001,0.082845,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+check_south,36915,0.014259,0.000000,0.024427,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+generate_legal_moves,9542,0.025701,0.000003,0.116256,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+<method 'disable' of '_lsprof.Profiler' objects>,13,0.000213,0.000016,0.000213,~

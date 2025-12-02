@@ -1,0 +1,23 @@
+Function name,ncalls,Tottime,Avg time Per Call (tottime/ncalls),Cumtime,file location
+<method 'items' of 'dict' objects>,1488157,0.208595,0.000000,0.208595,~
+<method 'append' of 'list' objects>,2852718,0.332448,0.000000,0.332448,~
+<built-in method builtins.len>,417195,0.053781,0.000000,0.053781,~
+<built-in method builtins.max>,29206429,2.992385,0.000000,2.992385,~
+<built-in method builtins.min>,114909933,10.360436,0.000000,10.360436,~
+check_horizontal,1524785,2.498719,0.000002,4.206573,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+check_diagonals,1499081,2.891645,0.000002,4.488864,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+__minimax,1551255,2.988775,0.000002,202.745913,/home/rasul/workspace_uni/aice2002_assg2/board_game_AI.py
+evaluation_func,1070971,102.405638,0.000096,175.274335,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+_wrapreduction_any_all,1488157,1.240301,0.000001,3.064339,/home/rasul/anaconda3/envs/assignment2/lib/python3.14/site-packages/numpy/_core/fromnumeric.py
+remove,1551255,0.495107,0.000000,0.495107,/home/rasul/workspace_uni/aice2002_assg2/board.py
+is_full,1488157,2.410777,0.000002,6.430302,/home/rasul/workspace_uni/aice2002_assg2/board.py
+<method 'reduce' of 'numpy.ufunc' objects>,1488157,1.615444,0.000001,1.615444,~
+set,1551255,0.499867,0.000000,0.499867,/home/rasul/workspace_uni/aice2002_assg2/board.py
+_all_dispatcher,1488157,0.181248,0.000000,0.181248,/home/rasul/anaconda3/envs/assignment2/lib/python3.14/site-packages/numpy/_core/fromnumeric.py
+all,1488157,0.773937,0.000001,3.838277,/home/rasul/anaconda3/envs/assignment2/lib/python3.14/site-packages/numpy/_core/fromnumeric.py
+get,342626754,65.123035,0.000000,65.123035,/home/rasul/workspace_uni/aice2002_assg2/board.py
+is_endgame,1551255,1.897048,0.000001,18.120201,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+<method 'disable' of '_lsprof.Profiler' objects>,9,0.000194,0.000022,0.000194,~
+gravity_l,2920365,2.026120,0.000001,3.565835,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+check_south,1551255,0.644300,0.000000,1.097413,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py
+generate_legal_moves,417195,1.106871,0.000003,5.005142,/home/rasul/workspace_uni/aice2002_assg2/connect_four.py

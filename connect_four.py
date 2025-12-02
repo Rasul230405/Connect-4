@@ -36,7 +36,7 @@ class ConnectFour:
                               ConnectFour.is_endgame,
                               ConnectFour.generate_legal_moves)
         
-        self.max_depth = difficulty_level
+        self.max_depth: int = difficulty_level
 
     def ai_move(self) -> tuple(int, int):
        [row, col] = self.AI.think(self.board, self.max_depth)
@@ -71,10 +71,22 @@ class ConnectFour:
     @staticmethod
     def generate_legal_moves(board: Board) -> List[List[int, int]]:
         # returns all the possible moves at each turn
+        
+        def gravity_l(board: Board, col: int) -> int:
+           # given a column returns the bottom row which is not occupied
+           # if column is full returns -1
+           row = -1
+           for i in range(board.row - 1, -1, -1):
+               if board.get(i, col) == 0:
+                   row = i
+                   break
+
+           return row
+
         all_moves = []
 
         for c in range(0, board.column):
-            row = ConnectFour.gravity(board, c)
+            row = gravity_l(board, c)
             if row != -1:
                 all_moves.append([row, c])
                 
@@ -344,4 +356,7 @@ class ConnectFour:
 
         return 0
 
-    
+
+    def print_game_stats(self):
+        filename = f"ai_perf_{self.max_depth}.csv"
+        self.AI.print_AI_stats(filename)
