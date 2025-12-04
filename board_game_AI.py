@@ -82,7 +82,7 @@ class BoardGameAI:
             if is_max_player:
                 return self._neg_inf 
             else:
-                return self._pos_inf - depth # win sooner. higher depth is better
+                return self._pos_inf - (self._max_depth - depth) # win sooner. higher depth is better
 
         # draw
         if endgame == -1:
