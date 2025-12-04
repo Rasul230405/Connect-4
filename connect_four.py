@@ -247,6 +247,86 @@ class ConnectFour:
         return score_max_p - score_min_p
 
 
+
+    # is_endgame()'s helper functions
+    @staticmethod
+    def check_south(board: Board, lm_row: int, lm_col: int) -> bool:
+        ch: int = board.get(lm_row, lm_col)
+
+        if lm_row <= (board.row - 4):
+            flag = True
+            for i in range(lm_row + 1, lm_row + 4):
+                if board.get(i, lm_col) != ch:
+                    flag = False
+                    break
+            if flag == True:
+                return True
+
+        return False
+
+    @staticmethod
+    def check_horizontal(board, lm_row, lm_col) -> bool:
+
+        ch: int = board.get(lm_row, lm_col)
+        left = max(lm_col - 3, 0)
+        right = min(lm_col + 3, board.column - 1)
+
+        while left + 3 <= right:
+            flag = True
+            for i in range(0, 4):
+                if board.get(lm_row, left + i) != ch:
+                    flag = False
+                    break
+
+            if flag == True:
+                return True
+
+            left += 1
+
+        return False
+
+    @staticmethod
+    def check_diagonals(board, lm_row, lm_col) -> bool:
+
+        ch: int = board.get(lm_row, lm_col)
+        # diagonal: NW + SE. starting from the upper left coordinate
+        min_coord = min(lm_row, lm_col)
+        left_row = lm_row - min_coord
+        left_col = lm_col - min_coord
+
+        while left_col + 3 < board.column and left_row + 3 < board.row:
+            flag = True
+            for i in range(0, 4):
+                if board.get(left_row + i, left_col + i) != ch:
+                    flag = False
+                    break
+
+            if flag == True:
+                return True
+
+            left_col += 1
+            left_row += 1
+
+        # diagonal: SW + NE. starting from the upper right coordinate
+        min_coord = min(lm_row, board.column - 1 - lm_col) #  board.column - 1, because index from 0
+        right_row = lm_row - min_coord
+        right_col = lm_col + min_coord
+
+        while right_row + 3 < board.row and right_col - 3 >= 0:
+            flag = True
+            for i in range(0, 4):
+                if board.get(right_row + i, right_col - i) != ch:
+                    flag = False
+                    break
+            if flag == True:
+                return True
+
+            right_row += 1
+            right_col -= 1
+
+        return False
+
+
     @staticmethod
     def is_endgame(board: Board, lm_row: int, lm_col: int) -> int:
         # returns 1 if any player wins, -1 if it is draw, 0 if it is not endgame
@@ -260,89 +340,14 @@ class ConnectFour:
         # max 4 ending combinations in a horizontal direction, always 1 in a vertical direction (south), max 6 in diagonal directions
         # no need to check North direction, because rows are filled from South towards the North
         
-        def check_south(board: Board, lm_row: int, lm_col: int) -> bool:
-            ch: int = board.get(lm_row, lm_col)
-
-            if lm_row <= (board.row - 4):
-                flag = True
-                for i in range(lm_row + 1, lm_row + 4):
-                    if board.get(i, lm_col) != ch:
-                        flag = False
-                        break
-                if flag == True:
-                    return True
-
-            return False
-
-        def check_horizontal(board, lm_row, lm_col) -> bool:
-
-            ch: int = board.get(lm_row, lm_col)
-            left = max(lm_col - 3, 0)
-            right = min(lm_col + 3, board.column - 1)
-
-            while left + 3 <= right:
-                flag = True
-                for i in range(0, 4):
-                    if board.get(lm_row, left + i) != ch:
-                        flag = False
-                        break
-
-                if flag == True:
-                    return True
-
-                left += 1
-
-            return False
-
-
-        def check_diagonals(board, lm_row, lm_col) -> bool:
-
-            ch: int = board.get(lm_row, lm_col)
-            # diagonal: NW + SE. starting from the upper left coordinate
-            min_coord = min(lm_row, lm_col)
-            left_row = lm_row - min_coord
-            left_col = lm_col - min_coord
-
-            while left_col + 3 < board.column and left_row + 3 < board.row:
-                flag = True
-                for i in range(0, 4):
-                    if board.get(left_row + i, left_col + i) != ch:
-                        flag = False
-                        break
-
-                if flag == True:
-                    return True
-
-                left_col += 1
-                left_row += 1
-
-            # diagonal: SW + NE. starting from the upper right coordinate
-            min_coord = min(lm_row, board.column - 1 - lm_col) #  board.column - 1, because index from 0
-            right_row = lm_row - min_coord
-            right_col = lm_col + min_coord
-
-            while right_row + 3 < board.row and right_col - 3 >= 0:
-                flag = True
-                for i in range(0, 4):
-                    if board.get(right_row + i, right_col - i) != ch:
-                        flag = False
-                        break
-                if flag == True:
-                    return True
-
-                right_row += 1
-                right_col -= 1
-
-            return False
-
         
-        if check_south(board, lm_row, lm_col):
+        if ConnectFour.check_south(board, lm_row, lm_col):
             return 1
 
-        if check_horizontal(board, lm_row, lm_col):
+        if ConnectFour.check_horizontal(board, lm_row, lm_col):
             return 1
 
-        if check_diagonals(board, lm_row, lm_col):
+        if ConnectFour.check_diagonals(board, lm_row, lm_col):
             return 1
 
         # when board is full and there is no winner - draw

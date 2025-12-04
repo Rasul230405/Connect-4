@@ -37,13 +37,13 @@ def game_loop(game: ConnectFour, player_turn: int=1) -> None:
         if endgame == 1:
             flag = False
             if not player_turn:
-                print("You Lost. Hades is gonna escort you to the Underworld! Have nice chats with Trojan heroes there!")
+                print("You Lost. Hades awaits to escort you to the Underworld! Do pay my respects to Sophocles there - his tragedies rival your gameplay!")
 
             else:
                 print("Congrats, You won! You are the smartest person in the world now!")
         if endgame == -1:
             flag = False
-            print("Draw! Humanity still have a chance against AI")
+            print("Draw! Humanity still have a chance against AI!")
 
         player_turn = not player_turn
             
