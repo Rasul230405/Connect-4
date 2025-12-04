@@ -22,17 +22,12 @@ from board_game_AI import BoardGameAI
 
 
 class ConnectFour:
-
-    max_eval = 80
-    min_eval = -80
     
     def __init__(self, p_colour: str, difficulty_level: int=3, n_row: int=6,
                  n_column: int=7):
         self.board: Board = Board(row=n_row, column=n_column, p_colour=p_colour)
         
         self.AI = BoardGameAI(ConnectFour.evaluation_func,
-                              ConnectFour.max_eval,
-                              ConnectFour.min_eval,
                               ConnectFour.is_endgame,
                               ConnectFour.generate_legal_moves)
         
@@ -72,12 +67,12 @@ class ConnectFour:
     def generate_legal_moves(board: Board) -> List[List[int, int]]:
         # returns all the possible moves at each turn
         
-        def gravity_l(board: Board, col: int) -> int:
+        def gravity_l(b: Board, col: int) -> int:
            # given a column returns the bottom row which is not occupied
            # if column is full returns -1
            row = -1
-           for i in range(board.row - 1, -1, -1):
-               if board.get(i, col) == 0:
+           for i in range(b.row - 1, -1, -1):
+               if b.get(i, col) == 0:
                    row = i
                    break
 

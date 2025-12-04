@@ -18,9 +18,9 @@ from board import Board
 
 class BoardGameAI:
 
-    def __init__(self, evaluation_func, max_eval, min_eval, endgame_func, legal_moves_func, pruning: bool=True):
-        self._pos_inf = max_eval + 1
-        self._neg_inf = min_eval - 1
+    def __init__(self, evaluation_func, endgame_func, legal_moves_func, pruning: bool=True):
+        self._pos_inf = float("inf")
+        self._neg_inf = float("-inf")
         
         self.evaluation_func = evaluation_func
         self.endgame_func = endgame_func
@@ -113,13 +113,14 @@ class BoardGameAI:
                     
                     if beta <= alpha:
                         print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value: ", end="")
+                        # print infinity values in a nice fromat
                         self.__print_val(value)
                         print()
                         print(f"beta is {beta}, alpha is {alpha}")
                         print(f"Depth {self._max_depth - depth + 1}, {len(all_moves) - i - 1} branches pruned.")
                         
                         break
-                    alpha = max(alpha, value)
+                
                     
                 print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value:", end="")
                 self.__print_val(value)
@@ -140,10 +141,12 @@ class BoardGameAI:
                 value = min(value, self.__minimax(board, depth - 1, alpha, beta, True, row, col))
                 board.remove(row, col)
                 beta = min(beta, value)
+                
                 if self.pruning:
                     
                     if beta <= alpha:
                         print(f"Depth {self._max_depth - depth + 1}, Move: ({row}, {col}), Minimax value: ", end="")
+                        # print infinity values in a nice fromat
                         self.__print_val(value)
                         print()
                         print(f"beta is {beta}, alpha is {alpha}")
