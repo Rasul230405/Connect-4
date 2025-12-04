@@ -5,3 +5,4 @@
 *.pth
 temp/
 test/board_ui.py
+*.csv
