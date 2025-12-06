@@ -4,6 +4,7 @@
 *.txt~
 *.pth
 temp/
-test/board_ui.py
+test/
 *.csv
 *.ipynb
+board_ui.py
