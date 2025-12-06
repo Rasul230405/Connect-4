@@ -1,4 +1,4 @@
-# Connect 4 (PLayer vs AI)
+# Connect 4 (Player vs AI)
 
 A python implementation of the game Connect 4.
 
@@ -12,26 +12,26 @@ You must have **conda** and **Python** installed.
 
 ## How to run
 Create environment:
-'''bash
+```bash
 conda env create -f environment.yml
-'''
+```
 
 Activate environment:
-'''bash
+```bash
 conda activate connect4
-'''
+```
 
 Run the game:
-'''bash
+```bash
 python3 main.py
-'''
+```
 
 ## Configuration
 You can configure or customise the game by providing command line arguments.
 For help:
-'''bash
+```bash
 python3 main.py --help
-'''
+```
 
 | Argument | Flag | Description | Available values | Default |
 |----------|------|-------------|------------------|---------|
