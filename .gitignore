@@ -6,3 +6,4 @@
 temp/
 test/board_ui.py
 *.csv
+*.ipynb
