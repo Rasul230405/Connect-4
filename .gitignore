@@ -8,3 +8,6 @@ test/
 *.csv
 *.ipynb
 board_ui.py
+*.*~
+'*'
+#*#
