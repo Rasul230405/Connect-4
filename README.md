@@ -13,7 +13,7 @@ You must have **conda** and **Python** installed.
 ## How to run
 Create environment:
 ```bash
-conda env create -f environment.yml
+conda env create -f environment.yaml
 ```
 
 Activate environment:
