@@ -66,22 +66,9 @@ class ConnectFour:
     @staticmethod
     def generate_legal_moves(board: Board) -> List[List[int, int]]:
         # returns all the possible moves at each turn
-        
-        def gravity_l(b: Board, col: int) -> int:
-           # given a column returns the bottom row which is not occupied
-           # if column is full returns -1
-           row = -1
-           for i in range(b.row - 1, -1, -1):
-               if b.get(i, col) == 0:
-                   row = i
-                   break
-
-           return row
-
         all_moves = []
-
         for c in range(0, board.column):
-            row = gravity_l(board, c)
+            row = ConnectFour.gravity(board, c)
             if row != -1:
                 all_moves.append([row, c])
                 

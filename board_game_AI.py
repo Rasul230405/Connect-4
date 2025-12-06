@@ -107,8 +107,7 @@ class BoardGameAI:
                 value = max(value, self.__minimax(board, depth - 1, alpha, beta, False, row, col))
                 board.remove(row, col)
 
-                alpha = max(alpha, value)
-                
+                alpha = max(alpha, value)     
                 if self.pruning:
                     
                     if beta <= alpha:
@@ -141,7 +140,6 @@ class BoardGameAI:
                 value = min(value, self.__minimax(board, depth - 1, alpha, beta, True, row, col))
                 board.remove(row, col)
                 beta = min(beta, value)
-                
                 if self.pruning:
                     
                     if beta <= alpha:
