@@ -1,4 +1,4 @@
-name: assignment2
+name: connect4
 channels:
   - defaults
 dependencies:
